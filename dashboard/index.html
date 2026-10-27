@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0b0c0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Trench</title>
+<style>
+:root{--bg:#0b0c0e;--s1:#121316;--s2:#17181c;--line:#23252b;--text:#ececf0;--mute:#8b8e97;--dim:#5d6068;
+--acc:#8b9cff;--up:#34d399;--down:#f87171;--warn:#fbbf24;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{font:15px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,Segoe UI,Roboto,sans-serif;color:var(--text);
+background:var(--bg);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;
+padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 40px}
+header{position:sticky;top:0;z-index:5;background:rgba(11,12,14,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px)}
+.bar{max-width:760px;margin:0 auto;padding:14px 18px 12px;display:flex;align-items:center;gap:12px}
+.brand{font-weight:650;letter-spacing:-.01em;font-size:16px}
+.seg{margin-left:auto;display:flex;background:var(--s2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:var(--mute);padding:6px 14px;border-radius:999px}
+.seg button[aria-selected=true]{background:var(--text);color:#0b0c0e}
+.seg button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}
+.dot.ok{background:var(--up);box-shadow:0 0 0 3px rgba(52,211,153,.15)} .dot.bad{background:var(--down);box-shadow:0 0 0 3px rgba(248,113,113,.15)}
+.hero{padding:22px 0 6px}
+.eyebrow{color:var(--mute);font-size:12.5px;letter-spacing:.02em}
+.big{font-size:42px;font-weight:650;letter-spacing:-.03em;line-height:1.1;margin:6px 0 6px}
+.big small{font-size:18px;font-weight:550;color:var(--mute);letter-spacing:0;margin-left:6px}
+.sub{color:var(--mute);font-size:14px}.sub b{color:var(--text);font-weight:600}
+.up{color:var(--up)}.down{color:var(--down)}
+.chart{position:relative;margin:18px 0 10px;background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:14px 0 6px}
+.chart .cap{display:flex;justify-content:space-between;gap:10px;padding:0 16px;font-size:12.5px;color:var(--mute);min-height:18px}
+.chart .cap b{color:var(--text);font-weight:600}
+.chart svg{display:block;width:100%;height:190px;touch-action:pan-y}
+.empty{color:var(--dim);font-size:13.5px;padding:18px 16px;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:10px 0}
+.stat{background:var(--s1);padding:12px 16px}
+.stat .k{color:var(--mute);font-size:12px}.stat .v{font-size:17px;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .v small{color:var(--mute);font-weight:500;font-size:12.5px;margin-left:4px}
+@media(min-width:620px){.stats{grid-template-columns:repeat(4,1fr)}.big{font-size:52px}.chart svg{height:240px}}
+.note{font-size:13px;color:var(--warn);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:9px 12px;margin:10px 0}
+h2{font-size:13px;font-weight:600;color:var(--mute);margin:26px 2px 8px;display:flex;justify-content:space-between}
+h2 span{color:var(--dim);font-weight:500}
+.list{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .l{flex:1;min-width:0}.row .r{text-align:right;flex:none}
+.coin{font-weight:600;font-size:15px}.coin:hover,.coin:active{color:var(--acc)}
+.meta{color:var(--mute);font-size:12.5px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnl{font-weight:600;font-size:15px}.pct{font-size:12.5px;margin-top:1px}
+.sells{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:6px}
+.chip{font-size:11.5px;color:var(--mute);background:var(--s2);border:1px solid var(--line);border-radius:7px;padding:2px 7px;white-space:nowrap}
+.chip b{color:var(--text);font-weight:600}
+.usd{font-size:15px}.kvrow{display:flex;justify-content:space-between;gap:12px;padding:10px 16px;border-top:1px solid var(--line);font-size:14px}.kvrow:first-child{border-top:0}.kvrow .k{color:var(--mute)}.kvrow .v{text-align:right}.kvrow .v small{display:block;color:var(--dim);font-size:12px}
+.rules{color:var(--dim);font-size:12px;margin:2px 2px 0;line-height:1.5}
+.row.t{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.more{display:none;margin-top:8px;font-size:12.5px;color:var(--mute)}.row.x .more{display:block}
+.more .kv{display:flex;flex-wrap:wrap;gap:2px 14px}.more .kv b{color:var(--text);font-weight:600}
+.lm{display:block;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--acc);font-family:inherit;font-weight:600;font-size:13.5px;padding:13px;cursor:pointer}
+footer{color:var(--dim);font-size:12px;text-align:center;margin-top:26px}
+.err{color:var(--down)}
+</style></head>
+<body>
+<header><div class="bar">
+  <span class="dot" id="dot" title="Bot heartbeat"></span><span class="brand">Trench</span>
+  <div class="seg" role="tablist">
+    <button role="tab" id="t-papere" aria-selected="true" data-tab="papere">Bot 1</button>
+    <button role="tab" id="t-papera" aria-selected="false" data-tab="papera">Bot 2</button>
+    <button role="tab" id="t-paperg" aria-selected="false" data-tab="paperg">Bot 3</button>
+  </div>
+</div></header>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow" id="eyebrow">Closed PnL</div>
+    <div class="big" id="net">—</div>
+    <div class="sub" id="wl">Loading…</div>
+  </section>
+  <div id="wallet"></div>
+  <h2 id="botH" style="display:none">Bot trades <span id="botHs"></span></h2>
+  <div class="chart"><div class="cap"><span id="capL">Cumulative PnL</span><span id="capR"></span></div><svg id="svg" aria-label="Cumulative PnL chart"></svg></div>
+  <div id="notes"></div>
+  <div class="stats" id="stats"></div><div class="rules" id="rules"></div>
+  <h2>Open positions <span id="openN"></span></h2><div class="list" id="open"></div>
+  <h2><span style="color:inherit;font-weight:600" id="closedT">Recent closed</span> <span id="closedN"></span></h2><div class="list" id="closed"></div>
+  <footer id="foot">Read-only · updates every 8s · times MT</footer>
+</main>
+<script>
+const POLL=8000, base=location.pathname.replace(/\/(index\.html)?$/,'');
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sgn=(x,d=4)=>x==null?'—':(x>=0?'+':'−')+Math.abs(x).toFixed(d);
+const cls=x=>x==null?'':x>=0?'up':'down';
+const pct=x=>x==null?'—':(x>=0?'+':'−')+Math.abs(x).toFixed(0)+'%';
+const usd=x=>x==null?'—':x>=1e6?'$'+(x/1e6).toFixed(2)+'M':x>=1e3?'$'+(x/1e3).toFixed(1)+'k':'$'+x.toFixed(0);
+const coin=(s,m)=>`<a class="coin" href="https://pump.fun/coin/${encodeURIComponent(m)}" target="_blank" rel="noopener noreferrer">${esc(s)}</a>`;
+const ago=s=>s==null?'n/a':s<90?Math.round(s)+'s ago':Math.round(s/60)+'m ago';
+const state={tab:(false?location.hash.slice(1):'papere'),series:{},data:{},hover:null};
+
+function sellChips(ss){ if(!ss||!ss.length) return '';
+  return '<div class="sells">'+ss.map(s=>`<span class="chip">${esc(s.reason)}${s.frac_pct!=null?' · '+s.frac_pct+'%':''}${s.mult!=null?' @ '+s.mult.toFixed(2)+'×':''} <b>${s.sol!=null?s.sol.toFixed(4):'—'}</b></span>`).join('')+'</div>'; }
+
+// merge new series into the client copy: append only points we have not seen (no reload)
+function mergeSeries(tab,key,pts){
+  const cur=state.series[tab];
+  if(!cur||cur.key!==key){ state.series[tab]={key,pts:pts.slice(),ids:new Set(pts.map(p=>p.id))}; return pts.length; }
+  let added=0; for(const p of pts){ if(!cur.ids.has(p.id)){ cur.ids.add(p.id); cur.pts.push(p); added++; } }
+  if(added){ cur.pts.sort((a,b)=>a.t-b.t||a.id-b.id); let run=0; for(const p of cur.pts){run+=p.d;p.v=run;} }
+  return added;
+}
+
+function drawChart(){
+  const svg=$('svg'), S=state.series[state.tab], pts=S?S.pts:[];
+  const W=svg.clientWidth||360, H=svg.clientHeight||190, pl=16, pr=56, pt=12, pb=14;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  if(!pts.length){ svg.innerHTML=`<text x="${W/2}" y="${H/2}" fill="#5d6068" font-size="13" text-anchor="middle">No closed trades yet</text>`; $('capR').innerHTML=''; return; }
+  const vals=[0,...pts.map(p=>p.v)], lo=Math.min(...vals), hi=Math.max(...vals), span=(hi-lo)||1;
+  const n=pts.length, X=i=>pl+(W-pl-pr)*i/n, Y=v=>pt+(H-pt-pb)*(1-(v-lo)/span);
+  const last=pts[n-1].v, col=last>=0?'#34d399':'#f87171';
+  let d=`M${X(0).toFixed(1)},${Y(0).toFixed(1)}`; pts.forEach((p,i)=>d+=`L${X(i+1).toFixed(1)},${Y(p.v).toFixed(1)}`);
+  const area=d+`L${X(n).toFixed(1)},${Y(0).toFixed(1)}Z`;
+  const tick=v=>`<text x="${W-pr+8}" y="${(Y(v)+4).toFixed(1)}" fill="#5d6068" font-size="11">${sgn(v,2)}</text>`;
+  let h=`<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".22"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+   <line x1="${pl}" x2="${W-pr}" y1="${Y(0)}" y2="${Y(0)}" stroke="#2e3038" stroke-dasharray="3 4"/>
+   <path d="${area}" fill="url(#g)"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+   ${tick(hi)}${lo<0&&hi>0?tick(0):''}${tick(lo)}
+   <circle cx="${X(n)}" cy="${Y(last)}" r="3.5" fill="${col}"/>`;
+  const k=state.hover;
+  if(k!=null&&pts[k]){ const p=pts[k], x=X(k+1);
+    h+=`<line x1="${x}" x2="${x}" y1="${pt}" y2="${H-pb}" stroke="#8b9cff" stroke-opacity=".5"/><circle cx="${x}" cy="${Y(p.v)}" r="4" fill="#0b0c0e" stroke="#8b9cff" stroke-width="2"/>`;
+    $('capR').innerHTML=`${esc(p.s)} <span class="${cls(p.d)}">${sgn(p.d)}</span> → <b class="${cls(p.v)}">${sgn(p.v)}</b>`;
+  } else $('capR').innerHTML=`${n} trades · <b class="${cls(last)}">${sgn(last)} SOL</b>`;
+  svg.innerHTML=h;
+  svg._map=x=>{ const i=Math.round((x-pl)/((W-pl-pr)/n))-1; return Math.max(0,Math.min(n-1,i)); };
+}
+(function(){ const svg=$('svg');
+  const mv=e=>{ if(!svg._map) return; const r=svg.getBoundingClientRect(); state.hover=svg._map((e.clientX-r.left)*((svg.viewBox.baseVal.width||r.width)/r.width)); drawChart(); };
+  svg.addEventListener('pointermove',mv); svg.addEventListener('pointerdown',mv);
+  svg.addEventListener('pointerleave',()=>{state.hover=null;drawChart();});
+})();
+
+function stat(k,v,c=''){ return `<div class="stat"><div class="k">${k}</div><div class="v ${c}">${v}</div></div>`; }
+
+function render(){
+  const d=state.data[state.tab]; if(!d) return;
+  if(!d.ok){ $('wl').innerHTML=`<span class="err">${esc(d.error)}</span>`; return; }
+  const s=d.summary, st=d.status, live=d.kind==='live';
+  $('eyebrow').textContent=live?'Closed PnL · all live trades':'Closed PnL · since '+(d.baseline.local||'start').replace(/^\d{4}-(\d\d)-(\d\d) (\d\d:\d\d):\d\d (\w+)$/,(m,mo,da,t,z)=>`${['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+mo]} ${+da}, ${t} ${z}`);
+  const wp=live?d.wallet_pnl:null, wok=wp&&!wp.error;
+  const botLine=`<b>${s.closed_n}</b> trades · <b>${s.wins}W</b> / <b>${s.losses}L</b> · <b>${s.win_rate==null?'—':Math.round(s.win_rate)+'%'}</b> win rate`;
+  $('botH').style.display=live?'':'none';
+  if(wok){
+    $('eyebrow').textContent='Wallet PnL · value now − deposits + withdrawals';
+    $('net').innerHTML=`<span class="${cls(wp.pnl_usd)}">${wp.pnl_usd<0?'−':'+'}$${Math.abs(wp.pnl_usd).toFixed(2)}</span>`;
+    $('wl').innerHTML=`<span class="${cls(wp.pnl_sol)}">${sgn(wp.pnl_sol)} SOL</span> · now <b>$${wp.current_usd.toFixed(2)}</b> vs <b>$${wp.deposits_usd.toFixed(2)}</b> deposited`;
+    const fl=wp.flows, cp=a=>esc(a.slice(0,4)+'…'+a.slice(-4));
+    $('wallet').innerHTML=`<div class="list" style="margin-top:16px">
+      <div class="kvrow"><span class="k">Wallet now</span><span class="v">$${wp.current_usd.toFixed(2)}<small>${wp.balance_sol.toFixed(4)} SOL${wp.tokens.length?` + ${wp.tokens.length} token${wp.tokens.length>1?'s':''} $${wp.tokens_usd.toFixed(2)}`:' · no tokens held'}${wp.open_mark_sol?` + open ${wp.open_mark_sol.toFixed(4)} SOL`:''}</small></span></div>
+      <div class="kvrow"><span class="k">Reclaimable deposits · ${wp.reclaimable_n} empty token account${wp.reclaimable_n==1?'':'s'}</span><span class="v">${(wp.reclaimable_sol||0).toFixed(4)} SOL<small>$${((wp.reclaimable_sol||0)*wp.sol_usd).toFixed(2)} · not counted in PnL</small></span></div>
+      <div class="kvrow"><span class="k">Deposits · ${fl.filter(f=>f.dir==='in').length}</span><span class="v">−$${wp.deposits_usd.toFixed(2)}<small>${wp.deposits_sol.toFixed(4)} SOL · $${wp.deposits_usd_now.toFixed(2)} at today's price</small></span></div>
+      <div class="kvrow"><span class="k">Withdrawals · ${fl.filter(f=>f.dir==='out').length}</span><span class="v">+$${wp.withdrawals_usd.toFixed(2)}<small>${wp.withdrawals_sol.toFixed(4)} SOL</small></span></div>
+      ${fl.map(f=>`<div class="kvrow"><span class="k">${f.dir==='in'?'In':'Out'} · ${esc(f.time.replace(/:\d\d (AM|PM)/,' $1').replace(/ M[DS]T$/,''))}<small style="display:block;color:var(--dim);font-size:12px"><a href="https://solscan.io/tx/${esc(f.sig)}" target="_blank" rel="noopener noreferrer">${f.dir==='in'?'from':'to'} ${cp(f.counterparty)}</a></small></span><span class="v">$${(f.usd||0).toFixed(2)}<small>${f.sol.toFixed(4)} SOL @ $${(f.usd_px||0).toFixed(2)}</small></span></div>`).join('')}
+    </div><div class="rules">Prices: now SOL $${wp.sol_usd.toFixed(2)} (bot's ${esc(wp.sol_usd_sources)} feed, ${esc((wp.sol_usd_at||'').slice(11,16))} MT); deposits at the minute each was sent (${esc((fl[0]||{}).px_src||'Binance SOLUSDT 1m')}). Plain SOL transfers only, from on-chain history (${wp.tx_count} txs, checked ${esc(wp.chain_at)}).</div>`;
+    $('botHs').innerHTML=`<span class="${cls(s.net_sol)}">${sgn(s.net_sol)} SOL</span> closed`;
+  } else {
+    $('wallet').innerHTML=live&&wp&&wp.error?`<div class="note">Wallet PnL unavailable: ${esc(wp.error)}</div>`:'';
+    $('net').innerHTML=`<span class="${cls(s.net_sol)}">${sgn(s.net_sol)}</span><small>SOL</small>`;
+    $('wl').innerHTML=botLine;
+  }
+  if(live) $('botHs').innerHTML=`${s.closed_n} · ${s.wins}W/${s.losses}L · <span class="${cls(s.net_sol)}">${sgn(s.net_sol)} SOL</span>`;
+  const hb=st.heartbeat_age_s; $('dot').className='dot '+(hb!=null&&hb<180?'ok':'bad');
+  let g='';
+  const reg='';  // regime removed 2026-10-10
+  const hbs=stat('Heartbeat', ago(hb)+(st.poll!=null?`<small>poll ${st.poll}</small>`:''), hb!=null&&hb<180?'':'down');
+  if(live){
+    g+=stat('Wallet', st.balance_sol==null?esc(st.balance_note||'unknown'):st.balance_sol.toFixed(4)+'<small>SOL</small>');
+    g+=stat('Position size', (d.config.size_sol??'—')+'<small>SOL</small>');
+    g+=stat('Daily loss cap', d.config.daily_loss_cap_sol==null?'Off':d.config.daily_loss_cap_sol+'<small>SOL</small>');
+    g+=stat('Open · marked', `${s.open_n} <small class="${cls(s.open_unrealized_sol)}">${sgn(s.open_unrealized_sol)}</small>`);
+    g+=stat('Per trade', sgn(s.per_trade_sol)+'<small>SOL</small>', cls(s.per_trade_sol));
+    g+=stat('Today (UTC day)', st.day_pnl_sol==null?'—':sgn(st.day_pnl_sol,3)+'<small>SOL</small>', cls(st.day_pnl_sol));
+    g+=reg+hbs;
+  } else {
+    g+=stat('Total incl. open', sgn(s.total_sol)+'<small>SOL</small>', cls(s.total_sol));
+    if(d.audited){ const a=d.audited; g+=stat('Audited-cost PnL', sgn(a.net_sol)+`<small>SOL closed · ${sgn(a.total_sol)} incl. open · ${a.per_trade_sol==null?'—':sgn(a.per_trade_sol)}/trade · ${a.win_rate==null?'—':Math.round(a.win_rate)+'%'} wins</small>`, cls(a.net_sol)); }
+    g+=stat('Reclaimable deposits', (s.reclaimable_sol||0).toFixed(4)+'<small>SOL · '+s.reclaimable_n+' trades, not in PnL</small>', '');
+    g+=stat('Buys', s.buys_n+`<small>${s.closed_n} closed · ${s.open_n} open</small>`);
+    g+=stat('Open · marked', `${s.open_n} <small class="${cls(s.open_unrealized_sol)}">${sgn(s.open_unrealized_sol)}</small>`);
+    g+=stat('Per trade', sgn(s.per_trade_sol)+'<small>SOL</small>', cls(s.per_trade_sol));
+    g+=stat('Win rate', (s.win_rate==null?'—':Math.round(s.win_rate)+'%')+`<small>${s.wins}/${s.closed_n}</small>`);
+    g+=stat('Slots', st.open_slots!=null?`${st.open_slots}/${st.max_open}`:'—');
+    g+=reg+hbs;
+  }
+  $('rules').textContent=live?'':(d.rules?'Rules · '+d.rules.replace(/^main:\s*/i,''):'');
+  $('stats').innerHTML=g;
+  let notes='';
+  if(live){ (d.notes||[]).forEach(t=>notes+=`<div class="note">${esc(t)}</div>`);
+    if(d.graduated_unsold&&d.graduated_unsold.length) notes+=`<div class="note">Graduated, still in wallet (sell by hand): ${d.graduated_unsold.map(x=>coin(x.symbol,x.mint)).join(', ')}</div>`; }
+  if(hb!=null&&hb>300) notes+=`<div class="note">Bot heartbeat is ${Math.round(hb/60)} min old: the bot may be down.</div>`;
+  $('notes').innerHTML=notes;
+  $('openN').textContent=d.open.length||'';
+  $('open').innerHTML=d.open.length?d.open.map(o=>`<div class="row"><div class="l">${coin(o.symbol,o.mint)}
+     <div class="meta">Entry ${usd(o.entry_mcap_usd)} · <span class="${cls(o.mult-1)}">${o.mult.toFixed(2)}×</span> · ${Math.round(o.held_pct)}% held · ${Math.round(o.minutes)}m${o.sell_retrying?' · <span class="down">sell retrying</span>':''}</div>${sellChips(o.sells)}</div>
+     <div class="r"><div class="pnl ${cls(o.unrealized_sol)}">${sgn(o.unrealized_sol)}</div><div class="pct ${cls(o.unrealized_sol)}">${pct(o.unrealized_pct)}</div></div></div>`).join('')
+    :'<div class="empty">No open positions</div>';
+  if(live){
+    $('closedT').textContent='Recent closed'; $('closedN').textContent=d.closed.length?'last '+d.closed.length:'';
+    $('closed').innerHTML=d.closed.length?d.closed.map(c=>`<div class="row"><div class="l">${coin(c.symbol,c.mint)}
+     <div class="meta">${esc(c.reason)} · ${c.day&&c.day!==d.today?esc(c.day)+', ':''}${esc(c.time)}</div>${c.sells&&c.sells.length>1?sellChips(c.sells):''}</div>
+     <div class="r"><div class="pnl ${cls(c.pnl_sol)}">${sgn(c.pnl_sol)}</div><div class="pct ${cls(c.pnl_sol)}">${pct(c.pnl_pct)}</div></div></div>`).join('')
+    :'<div class="empty">No closed trades yet</div>';
+  } else { if(PL.total!==s.closed_n||PL.since!==d.baseline.ts) syncTrades(s.closed_n,d.baseline.ts); renderTrades(); }
+  $('foot').textContent='Read-only · updates every 8s · times MT'+(live?` · ${d.orders_sent} orders sent`:'')+(d.downtime_today?(' · downtime today: '+[['papere','Bot 1'],['papera','Bot 2'],['paperg','Bot 3']].map(([k,n])=>{const s=d.downtime_today[k]||0;return n+' '+(s>=3600?Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m':Math.floor(s/60)+'m')}).join(', ')):'')+(live&&d.compare?(' · vs paper since '+d.compare.since_local+': both '+d.compare.both+', paper only '+d.compare.paper_only+', live only '+d.compare.live_only+(d.compare.both?', buy lag '+d.compare.avg_buy_lag_s.toFixed(1)+'s, entry MC '+(d.compare.avg_entry_mc_diff_pct>=0?'+':'')+d.compare.avg_entry_mc_diff_pct.toFixed(1)+'%':'')):'')+' · updated '+new Date(d.generated_at*1000).toLocaleTimeString('en-US',{timeZone:'America/Boise',hour:'numeric',minute:'2-digit',second:'2-digit'});
+  drawChart();
+}
+
+// ---- paper: every closed trade since the baseline, paged (50 at a time)
+const mkPL=()=>({items:[],total:null,since:null,busy:false,open:new Set()}); const PLS={papere:mkPL(),papera:mkPL(),paperg:mkPL()}; let PL=PLS.papere;
+async function fetchTrades(offset,limit,tab){ const r=await fetch(`${base}/api/${tab||'papere'}/trades?offset=${offset}&limit=${limit}&_=${Date.now()}`,{cache:'no-store'}); return r.json(); }
+async function syncTrades(total,since){ const PL=PLS[state.tab]||PLS.papere, tb=state.tab; if(PL.busy) return; PL.busy=true;
+  try{ const keep=PL.since===since?Math.max(50,PL.items.length+Math.max(0,total-(PL.total||0))):50;
+    const t=await fetchTrades(0,Math.min(keep,500),tb); if(t.ok){ PL.items=t.trades; PL.total=t.total; PL.since=t.since_ts; }
+  }finally{ PL.busy=false; } if(state.tab===tb) renderTrades(); }
+async function moreTrades(){ if(PL.busy) return; PL.busy=true;
+  try{ const t=await fetchTrades(PL.items.length,50,state.tab); if(t.ok){ const ids=new Set(PL.items.map(x=>x.id)); PL.items.push(...t.trades.filter(x=>!ids.has(x.id))); PL.total=t.total; } }
+  finally{ PL.busy=false; } renderTrades(); }
+function tradeRow(c,today){
+  const real=(c.sells||[]).filter(x=>!/failed/.test(x.reason)), x=PL.open.has(c.id);
+  return `<div class="row t${x?' x':''}" data-id="${c.id}"><div class="l">${coin(c.symbol,c.mint)}
+   <div class="meta">Entry ${usd(c.entry_mcap_usd)} · ${esc(c.reason)} · ${c.day&&c.day!==today?esc(c.day)+', ':''}${esc(c.time)}</div>${real.length>1?sellChips(real):''}
+   ${c.held_peak_mult!=null||c.exit_mult!=null?`<div class="meta">Exit <b>${c.exit_mult!=null?c.exit_mult.toFixed(2)+'×':'—'}</b> · Peak held <b>${c.held_peak_mult!=null?c.held_peak_mult.toFixed(2)+'×':'—'}</b> · Peak after exit <b>${c.post_peak_mult!=null?c.post_peak_mult.toFixed(2)+'×':'—'}</b> · Max <b>${c.overall_peak_mult!=null?c.overall_peak_mult.toFixed(2)+'×':'—'}</b>${c.time_to_peak_min!=null?' in '+(c.time_to_peak_min<90?c.time_to_peak_min.toFixed(1)+'m':(c.time_to_peak_min/60).toFixed(1)+'h'):''}</div>`:''}
+   <div class="more"><div class="kv"><span>In <b>${c.sol_in!=null?c.sol_in.toFixed(4):'—'}</b></span><span>Out <b>${c.sol_out!=null?c.sol_out.toFixed(4):'—'}</b></span>
+   <span>Peak <b>${c.peak_mult!=null?c.peak_mult.toFixed(2)+'×':'—'}</b></span><span>Opened <b>${esc(c.opened||'—')}</b></span>
+   <span>Score <b>${c.score!=null?c.score.toFixed(1):'—'}</b></span><span>Score v2 <b>${c.score_v2!=null?Math.round(c.score_v2):'—'}</b></span></div>
+   ${c.sells&&c.sells.length?'<div class="sells">'+c.sells.map(s=>`<span class="chip">${esc(s.reason)}${s.frac_pct!=null?' · '+s.frac_pct+'%':''}${s.mult!=null?' @ '+s.mult.toFixed(2)+'×':''}${s.mcap_usd!=null?' · '+usd(s.mcap_usd):''} <b>${s.sol!=null?s.sol.toFixed(4):'—'}</b></span>`).join('')+'</div>':''}</div></div>
+   <div class="r"><div class="pnl ${cls(c.pnl_sol)}">${sgn(c.pnl_sol)}</div><div class="pct ${cls(c.pnl_sol)}">${pct(c.pnl_pct)}</div>${c.audited_pnl_sol!=null?`<div class="pct ${cls(c.audited_pnl_sol)}">audited ${sgn(c.audited_pnl_sol)}</div>`:''}</div></div>`; }
+function renderTrades(){ if(!PLS[state.tab]) return; PL=PLS[state.tab]; const d=state.data[state.tab];
+  $('closedT').textContent='Closed trades'; $('closedN').textContent=PL.total==null?'':`${PL.items.length} of ${PL.total}`;
+  $('closed').innerHTML=PL.total===0?'<div class="empty">No closed trades since the baseline</div>':
+    PL.items.map(c=>tradeRow(c,d&&d.today)).join('')+(PL.items.length<(PL.total||0)?`<button class="lm" id="lm">Load ${Math.min(50,PL.total-PL.items.length)} more</button>`:''); }
+$('closed').addEventListener('click',e=>{ if(e.target.closest('a')) return; if(e.target.id==='lm'){ moreTrades(); return; }
+  const r=e.target.closest('.row.t'); if(!r) return; const id=+r.dataset.id; PL.open.has(id)?PL.open.delete(id):PL.open.add(id); r.classList.toggle('x'); });
+
+async function load(tab){
+  try{ const r=await fetch(`${base}/api/${tab}?_=${Date.now()}`,{cache:'no-store'}); const d=await r.json();
+    state.data[tab]=d; if(d.ok) mergeSeries(tab,d.series_key,d.series); if(tab===state.tab) render();
+  }catch(e){ if(tab===state.tab) $('foot').innerHTML=`<span class="err">Update failed, retrying…</span>`; }
+}
+function setTab(t){ state.tab=t; if(PLS[t]) PL=PLS[t]; state.hover=null; history.replaceState(null,'','#'+t);
+  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
+  if(state.data[t]) render(); else { $('net').textContent='—'; $('wl').textContent='Loading…'; drawChart(); }
+  load(t); }
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+addEventListener('resize',drawChart);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) load(state.tab); });
+setTab(state.tab); setInterval(()=>{ if(!document.hidden) load(state.tab); },POLL);
+</script>
+</body></html>
