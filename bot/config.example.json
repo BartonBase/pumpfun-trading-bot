@@ -1,0 +1,326 @@
+{
+  "_readme": "EXAMPLE CONFIG. Every strategy number below (entry, score, skips, exits, filters, learning) is an example value, not the settings I trade with. Copy to config.json and tune your own.",
+  "mode": "learning",
+  "feed": {
+    "base_url": "https://frontend-api-v3.pump.fun",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) trench-bot-paper/1.0",
+    "min_request_gap_seconds": 4,
+    "max_retries": 4,
+    "backoff_seconds": 10,
+    "backoff_max_seconds": 60,
+    "timeout_seconds": 20,
+    "page_limit": 100,
+    "include_nsfw": true,
+    "history_sample_offsets": [
+      350,
+      700,
+      1000
+    ],
+    "graduated_pages": 1,
+    "sol_quote_mint": "11111111111111111111111111111111"
+  },
+  "rpc": {
+    "enabled": true,
+    "public_url": "https://api.mainnet-beta.solana.com",
+    "helius_url_template": "https://mainnet.helius-rpc.com/?api-key={key}",
+    "batch_size": 100,
+    "min_request_gap_seconds": 1.0,
+    "helius_min_request_gap_seconds": 0.25,
+    "timeout_seconds": 20
+  },
+  "curve": {
+    "initial_real_token_reserves": 793100000000000,
+    "token_decimals": 6
+  },
+  "poll": {
+    "interval_seconds": 30,
+    "watch_minutes_after_band": 120,
+    "max_watch": 400,
+    "fast_open_seconds": 2
+  },
+  "regime": {
+    "refresh_minutes": 7,
+    "windows_hours": [
+      12,
+      46
+    ],
+    "verdict_from": "worst",
+    "dead_volume_minutes": 8,
+    "grad_maturity_minutes": 52,
+    "min_sample_mature": 226,
+    "round_trip_drawdown_pct": 62,
+    "outcome_min_minutes": 33,
+    "win_multiple": 3.5,
+    "min_sample_mints": 360,
+    "min_sample_band": 19,
+    "min_sample_prior": 2,
+    "min_sample_round_trip": 12,
+    "min_followup_minutes_ath": 3,
+    "stand_down_grad_rate_max": 0.0053,
+    "stand_down_2x_rate_max": 0.07,
+    "stand_down_round_trip_share_min": 0.65,
+    "stand_down_if_no_2x_24h": true,
+    "tradable_grad_rate_min": 0.012,
+    "tradable_2x_rate_min": 0.08,
+    "tradable_round_trip_share_max": 0.8,
+    "stand_down_streak_warn": 2
+  },
+  "entry": {
+    "min_mcap_usd": 5000,
+    "max_mcap_usd": 10000,
+    "min_curve_pct": 0,
+    "max_curve_pct": 199,
+    "max_age_minutes": 10,
+    "allow_mayhem": false,
+    "skip_graduated": true,
+    "dup_ticker_window_minutes": 54,
+    "skip_duplicate_ticker": false,
+    "first_seen_min_mcap_usd": 0,
+    "first_seen_entry_window_seconds": null,
+    "buy_climbers": true,
+    "allow_reclaim": false,
+    "sol_quote_only": true,
+    "allowed_quote_mints": [
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    ]
+  },
+  "score": {
+    "min_score": 30,
+    "gate_entries": false,
+    "selective_min_score_bump": 5,
+    "base": 32,
+    "curve_sweet_low": 44,
+    "curve_sweet_high": 53,
+    "curve_sweet_points": 12,
+    "silent_thread_penalty": 8,
+    "reply_points_per_reply": 1.9,
+    "reply_points_max": 6,
+    "socials_points": 1,
+    "vertical_age_minutes": 3,
+    "vertical_curve_pct": 68,
+    "vertical_penalty": 27,
+    "ath_hold_min_age_minutes": 5,
+    "ath_hold_min_ratio": 0.6,
+    "ath_hold_penalty": 11,
+    "near_ath_ratio": 1.5,
+    "near_ath_points": 3,
+    "momentum_points_max": 4,
+    "momentum_full_pct": 20,
+    "momentum_drop_penalty": 2,
+    "prior_points_per_feature": 2,
+    "bundle_penalty": 44,
+    "bundle_hard_skip": true,
+    "risky_wallet_penalty": 4,
+    "bundler_wallet_penalty": 7,
+    "risky_penalty_max": 14,
+    "risky_dev_penalty": 16,
+    "follow_wallet_points": 5,
+    "follow_wallet_points_max": 9,
+    "ignore_replies": true,
+    "top10_bonus": {
+      "min_share": 0.38,
+      "max_share": 0.51,
+      "points": 3
+    }
+  },
+  "skips": {
+    "spike": false,
+    "vertical": false,
+    "serial_creator": true,
+    "too_few_holders": true,
+    "holder_count_missing": true,
+    "holder_data_missing": true,
+    "spike_pct": 54,
+    "serial_creator_at": 10,
+    "holders_at_most": 20,
+    "top10_below_min": true,
+    "min_top10_share": 0.3,
+    "min_bundsnip_pct": null,
+    "bundled_skip": true,
+    "shadow_serial_min": 0,
+    "shadow_serial_max": 0
+  },
+  "paper": {
+    "size_sol": 0.1,
+    "max_open": 5,
+    "daily_loss_cap_sol": null,
+    "fee_pct": 1.25,
+    "stale_price_minutes": 12,
+    "rescore_minutes": 2,
+    "slippage_pct": 2.0,
+    "priority_fee_sol": 0.0005,
+    "token_account_deposit_sol": 0.00203928,
+    "failed_sell_rate": 0.054
+  },
+  "exits": {
+    "tp1_multiple": 2.0,
+    "tp1_sell_frac": 0.5,
+    "tp2_multiple": 4.0,
+    "tp2_sell_frac": 0.5,
+    "trail_pct": 30,
+    "hard_stop_pct": 30,
+    "stall_minutes": 10,
+    "stall_min_gain_pct": 10,
+    "time_stop_minutes": 30,
+    "moonbag_requires_tp1": true,
+    "early_check_seconds": 60,
+    "early_check_max_mult": 1.0,
+    "early_stop_pct": 20,
+    "early_stop_minutes": 3
+  },
+  "signal": {
+    "wallet_window_seconds": 220,
+    "min_confirm_wallets": 2,
+    "require_wallet_confirm": false,
+    "bundle_recheck_minutes": 16
+  },
+  "wallets": {
+    "enabled_without_key": false,
+    "helius_api_base": "https://api.helius.xyz",
+    "helius_rest_min_gap_seconds": 0.37,
+    "top_holders": 27,
+    "funding_hops": 3,
+    "max_signature_pages": 2,
+    "funding_scan_txs": 4,
+    "hub_min_signatures": 1700,
+    "cex_timing_window_seconds": 366,
+    "fresh_funding_window_minutes": 179,
+    "max_cluster_supply_share": 0.21,
+    "min_distinct_clusters": 3,
+    "max_creator_cluster_share": 0.17,
+    "first_slots": 2,
+    "early_buyers": 116,
+    "real_winner_multiple": 6.8,
+    "min_winners_per_wallet": 4,
+    "sold_into_strength_ratio": 2.8,
+    "cache_hours": 50,
+    "trade_profiles_per_poll": 1,
+    "trade_profile_max_txs": 174,
+    "trade_profile_minutes": 11,
+    "cluster_check_profiled_coins": true,
+    "book_winners_per_refresh": 1,
+    "max_multi_wallet_sig_supply_share": 0.068
+  },
+  "tune": {
+    "lookback_trades": 24,
+    "min_trades": 10,
+    "fast_stop_minutes": 2,
+    "dominant_share": 0.96,
+    "score_step": 3,
+    "curve_step": 3
+  },
+  "learn": {
+    "wallet_risk_book": true,
+    "top_holders": 15,
+    "record_scored_coins": false,
+    "record_first_slot_buyers": true,
+    "first_slot_scan_txs": 73,
+    "wallet_check_margin": 0,
+    "outcome_min_minutes": 29,
+    "outcome_max_hours": 12,
+    "dump_max_mult": 0.51,
+    "bundler_min_coins": 3,
+    "risky_dev_rugs": 0,
+    "risky_creator_linked": 1,
+    "risky_min_rugs": 4,
+    "follow_require_profit": true,
+    "clean_min_coins": 1,
+    "track_after_close_minutes": 50,
+    "label_grace_minutes": 24,
+    "min_trades": 555,
+    "walk_forward_train_trades": 199,
+    "walk_forward_test_trades": 88,
+    "reject_degradation_below": 0.52,
+    "tolerable_degradation": 1.1,
+    "unlock_min_degradation": 1.1,
+    "max_pbo": 0.6,
+    "pbo_blocks": 15,
+    "grid": {
+      "tp1_multiple": [
+        0.85,
+        2.0,
+        4.1
+      ],
+      "trail_pct": [
+        40,
+        55,
+        93
+      ],
+      "hard_stop_pct": [
+        18,
+        58
+      ],
+      "time_stop_minutes": [
+        24,
+        24
+      ]
+    },
+    "auto_tune_every_minutes": 56,
+    "bounds": {
+      "exits.tp1_multiple": [
+        2.4,
+        5.6
+      ],
+      "exits.tp1_sell_frac": [
+        0.25,
+        1.4
+      ],
+      "exits.trail_pct": [
+        33,
+        32
+      ],
+      "exits.hard_stop_pct": [
+        34,
+        53
+      ],
+      "exits.stall_minutes": [
+        5,
+        20
+      ],
+      "exits.time_stop_minutes": [
+        27,
+        46
+      ],
+      "score.min_score": [
+        54,
+        57
+      ],
+      "entry.min_curve_pct": [
+        5,
+        53
+      ]
+    },
+    "follow_min_winners": 2,
+    "skill_min_tokens": 9,
+    "skill_min_success_rate": 1.2,
+    "skill_test_hours": 25
+  },
+  "execution": {
+    "enabled": false,
+    "key_env_var": "TRENCH_BOT_KEYPAIR_PATH",
+    "max_size_sol": 0.1
+  },
+  "data_sources": {
+    "helius_enabled": false,
+    "require_holder_check": true,
+    "pump_holders": {
+      "enabled": true,
+      "url": "https://frontend-api-v3.pump.fun/coins/top-holders/{mint}",
+      "timeout_seconds": 9,
+      "cache_seconds": 116,
+      "max_top1_share": 0.091,
+      "max_top10_share": 0.76,
+      "max_bundler_sniper_share": 0.32,
+      "max_dev_share": 0.1
+    }
+  },
+  "realistic_exits": {
+    "graduation_pool_wait_minutes": 5,
+    "stale_hard_close_minutes": 60
+  },
+  "fast_feed": {
+    "enabled": true
+  },
+  "bot_label": "Example paper bot",
+  "_entry_note": "allow_mayhem=false skips pump.fun 'Mayhem mode' tokens entirely."
+}

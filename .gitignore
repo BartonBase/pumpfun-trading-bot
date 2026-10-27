@@ -1,0 +1,21 @@
+# secrets
+.env
+.env.*
+*.key
+*keypair*
+*signer*
+id.json
+.token
+# local data
+data/
+*.db
+*.db-*
+*.sqlite
+*.csv
+*.log
+config.json
+config/score_v2.json
+cache/
+__pycache__/
+venv/
+.venv/
